@@ -32,9 +32,13 @@ header {
 }
 
 .book-list {
-    max-height: 0; /* Escondido por padrão */
+    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out; /* Animação suave */
+    transition: max-height 0.3s ease-out;
+}
+
+.book-list.open {
+    max-height: 1000px; /* Valor alto pra garantir que os detalhes caibam */
 }
 
 .book-item {
