@@ -1,3 +1,25 @@
+// Função pra ícones de status
+function statusIcon(shelf) {
+    switch (shelf) {
+        case "read": return "✅";
+        case "currently-reading": return "📖";
+        case "to-read": return "⏳";
+        default: return "";
+    }
+}
+
+// Função pra ícones de categorias
+function getCategoryIcon(category) {
+    switch (category) {
+        case "Matemática": return "📐";
+        case "Astronomia": return "🔭";
+        case "Estratégia/História": return "⚔️";
+        case "Finanças": return "💰";
+        case "Não-Ficção": return "📖";
+        default: return "";
+    }
+}
+
 // JSON exportado do Goodreads (completo)
 const booksData = [
     {"Book Id": 154278, "Title": "Fractal Market Analysis: Applying Chaos Theory to Investment and Economics", "Author": "Edgar E. Peters", "ISBN": "0471585246", "My Rating": 0, "Number of Pages": 336, "Year Published": 1994, "Exclusive Shelf": "to-read", "My Review": "", "Image": "https://m.media-amazon.com/images/I/61OXDKpCrqL._SL1360_.jpg"},
@@ -129,28 +151,6 @@ function updateDropdownHeight(categoryDiv) {
         }, 0);
     } else {
         bookList.style.maxHeight = null;
-    }
-}
-
-// Função pra ícones de status
-function statusIcon(shelf) {
-    switch (shelf) {
-        case "read": return "✅";
-        case "currently-reading": return "📖";
-        case "to-read": return "⏳";
-        default: return "";
-    }
-}
-
-// Função pra ícones de categorias
-function getCategoryIcon(category) {
-    switch (category) {
-        case "Matemática": return "📐";
-        case "Astronomia": return "🔭";
-        case "Estratégia/História": return "⚔️";
-        case "Finanças": return "💰";
-        case "Não-Ficção": return "📖";
-        default: return "";
     }
 }
 
