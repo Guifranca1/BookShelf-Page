@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Biblioteca - 2025</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
     <header>
@@ -15,12 +14,30 @@
             <button onclick="sortBooks('title')">Ordenar por Título</button>
             <button onclick="sortBooks('author')">Ordenar por Autor</button>
             <button onclick="sortBooks('year')">Ordenar por Ano</button>
+            <button onclick="showAddBookForm()">Adicionar Novo Livro</button>
         </div>
     </header>
 
     <div id="categories"></div>
 
-    <div id="reading-progress"></div>
+    <div id="add-book-form" style="display: none; margin-top: 20px; background-color: #2a2a2a; padding: 15px; border: 1px solid #444; border-radius: 5px;">
+        <h2>Adicionar Novo Livro</h2>
+        <input type="text" id="new-title" placeholder="Título" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <input type="text" id="new-author" placeholder="Autor" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <input type="text" id="new-isbn" placeholder="ISBN (opcional)" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <input type="number" id="new-pages" placeholder="Número de Páginas" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <input type="number" id="new-year" placeholder="Ano de Publicação" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <select id="new-status" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+            <option value="read">Lido</option>
+            <option value="currently-reading">Em Leitura</option>
+            <option value="to-read">Não Lido</option>
+        </select>
+        <input type="text" id="new-category" placeholder="Categoria (ou nova categoria)" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <input type="text" id="new-image" placeholder="URL da Imagem (opcional)" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+        <textarea id="new-review" placeholder="Resenha (opcional)" style="width: 100%; margin-bottom: 5px; padding: 5px; height: 50px;"></textarea>
+        <button onclick="addBook()">Adicionar Livro</button>
+        <button onclick="hideAddBookForm()">Cancelar</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
