@@ -21,7 +21,7 @@ function getCategoryIcon(category) {
 }
 
 // JSON exportado do Goodreads (completo)
-const booksData = [
+let booksData = [
     {"Book Id": 154278, "Title": "Fractal Market Analysis: Applying Chaos Theory to Investment and Economics", "Author": "Edgar E. Peters", "ISBN": "0471585246", "My Rating": 0, "Number of Pages": 336, "Year Published": 1994, "Exclusive Shelf": "to-read", "My Review": "", "Image": "https://m.media-amazon.com/images/I/61OXDKpCrqL._SL1360_.jpg"},
     {"Book Id": 665134, "Title": "The (Mis)Behavior of Markets", "Author": "Benoît B. Mandelbrot", "ISBN": "0465043550", "My Rating": 0, "Number of Pages": 352, "Year Published": 2004, "Exclusive Shelf": "to-read", "My Review": "", "Image": "https://m.media-amazon.com/images/I/717O8MYiiRL._SL1500_.jpg"},
     {"Book Id": 1590178, "Title": "The Evolution of Nuclear Strategy", "Author": "Lawrence Freedman", "ISBN": "0333972392", "My Rating": 0, "Number of Pages": 584, "Year Published": 2003, "Exclusive Shelf": "to-read", "My Review": "", "Image": "https://m.media-amazon.com/images/I/51PMkyWG9lL._SL1276_.jpg"},
@@ -79,9 +79,7 @@ function loadBooks() {
             const div = document.createElement("div");
             div.className = "book-item";
             
-            // Call the function and store the result BEFORE the div.textContent line.
             const statusIconResult = statusIcon(book["Exclusive Shelf"]); 
-            
             div.textContent = `${statusIconResult} ${book.Title} - ${book.Author}`;
 
             const detailsDiv = document.createElement("div");
@@ -97,6 +95,12 @@ function loadBooks() {
                 <p>Autor: ${book.Author} | Ano: ${book["Year Published"] || "N/A"} | Páginas: ${book["Number of Pages"] || "N/A"} | Status: ${status}</p>
                 <p>Avaliação: ${book["My Rating"] > 0 ? "⭐".repeat(book["My Rating"]) : "Sem avaliação"}</p>
                 <p>Resenha: ${book["My Review"] || "Sem resenha ainda."}</p>
+                <div style="margin-top: 10px;">
+                    <button onclick="updateStatus('${book.Title}', 'read')">Marcar como Lido</button>
+                    <button onclick="updateStatus('${book.Title}', 'currently-reading')">Em Leitura</button>
+                    <button onclick="updateStatus('${book.Title}', 'to-read')">Não Lido</button>
+                    <button onclick="showAddToDescription('${book.Title}')">Adicionar à Descrição</button>
+                </div>
             `;
             div.appendChild(detailsDiv);
 
@@ -126,22 +130,6 @@ function loadBooks() {
         categoryDiv.appendChild(bookList);
         categoriesDiv.appendChild(categoryDiv);
     });
-
-    // Gráfico de progresso
-    document.getElementById("reading-progress").innerHTML = `
-        <pre class="mermaid">
-        gantt
-            title Progresso de Leitura em 2025
-            dateFormat  YYYY-MM-DD
-            section Matemática
-            Chaos                  :done, 2025-01-05, 2w
-            section Astronomia
-            The God Equation       :done, 2025-01-10, 1w
-            section Não-Ficção
-            Guns, Germs, and Steel :active, 2025-02-01, 2025-03-01
-        </pre>
-    `;
-    window.mermaid.initialize({ startOnLoad: true });
 }
 
 // Função pra recalcular o max-height do dropdown
@@ -157,6 +145,28 @@ function updateDropdownHeight(categoryDiv) {
     }
 }
 
+// Função pra ícones de status
+function statusIcon(shelf) {
+    switch (shelf) {
+        case "read": return "✅";
+        case "currently-reading": return "📖";
+        case "to-read": return "⏳";
+        default: return "";
+    }
+}
+
+// Função pra ícones de categorias
+function getCategoryIcon(category) {
+    switch (category) {
+        case "Matemática": return "📐";
+        case "Astronomia": return "🔭";
+        case "Estratégia/História": return "⚔️";
+        case "Finanças": return "💰";
+        case "Não-Ficção": return "📖";
+        default: return "";
+    }
+}
+
 // Função pra ordenar livros globalmente
 function sortBooks(criteria) {
     booksData.sort((a, b) => {
@@ -166,6 +176,100 @@ function sortBooks(criteria) {
         return 0;
     });
     loadBooks();
+}
+
+// Função pra atualizar o status do livro
+function updateStatus(title, newStatus) {
+    const book = booksData.find(b => b.Title === title);
+    if (book) {
+        book["Exclusive Shelf"] = newStatus;
+        loadBooks(); // Recarrega a página pra refletir a mudança
+        alert(`Status de "${title}" atualizado para "${newStatus === 'read' ? 'Lido' : newStatus === 'currently-reading' ? 'Em Leitura' : 'Não Lido'}"`);
+    }
+}
+
+// Função pra mostrar o formulário de adicionar livro
+function showAddBookForm() {
+    document.getElementById("add-book-form").style.display = "block";
+}
+
+// Função pra esconder o formulário de adicionar livro
+function hideAddBookForm() {
+    document.getElementById("add-book-form").style.display = "none";
+    // Limpar campos
+    document.getElementById("new-title").value = "";
+    document.getElementById("new-author").value = "";
+    document.getElementById("new-isbn").value = "";
+    document.getElementById("new-pages").value = "";
+    document.getElementById("new-year").value = "";
+    document.getElementById("new-status").value = "to-read";
+    document.getElementById("new-category").value = "";
+    document.getElementById("new-image").value = "";
+    document.getElementById("new-review").value = "";
+}
+
+// Função pra adicionar um novo livro
+function addBook() {
+    const title = document.getElementById("new-title").value.trim();
+    const author = document.getElementById("new-author").value.trim();
+    const isbn = document.getElementById("new-isbn").value.trim();
+    const pages = parseInt(document.getElementById("new-pages").value) || 0;
+    const year = parseInt(document.getElementById("new-year").value) || 0;
+    const status = document.getElementById("new-status").value;
+    const categoryInput = document.getElementById("new-category").value.trim();
+    const image = document.getElementById("new-image").value.trim();
+    const review = document.getElementById("new-review").value.trim();
+
+    if (!title || !author || !categoryInput) {
+        alert("Título, autor e categoria são obrigatórios!");
+        return;
+    }
+
+    // Verificar se a categoria já existe
+    let categoryExists = Object.keys(categories).some(cat => cat.toLowerCase() === categoryInput.toLowerCase());
+    let category = categoryInput;
+
+    if (!categoryExists) {
+        // Adicionar nova categoria
+        categories[category] = [];
+        console.log(`Nova categoria adicionada: ${category}`);
+    }
+
+    // Adicionar o livro à categoria e ao booksData
+    const newBook = {
+        "Book Id": booksData.length + 1, // ID simples, pode ser ajustado
+        "Title": title,
+        "Author": author,
+        "ISBN": isbn || "",
+        "My Rating": 0,
+        "Number of Pages": pages,
+        "Year Published": year,
+        "Exclusive Shelf": status,
+        "My Review": review,
+        "Image": image || ""
+    };
+
+    booksData.push(newBook);
+    if (!categories[category].includes(title)) {
+        categories[category].push(title);
+    }
+
+    loadBooks();
+    hideAddBookForm();
+    alert(`Livro "${title}" adicionado com sucesso!`);
+}
+
+// Função pra mostrar o formulário de adicionar à descrição existente
+function showAddToDescription(title) {
+    const book = booksData.find(b => b.Title === title);
+    if (book) {
+        const newDescription = prompt(`Adicionar descrição para "${title}" (atual: "${book["My Review"] || "Sem resenha"}"):`);
+        if (newDescription !== null) {
+            book["My Review"] = newDescription.trim() || book["My Review"] || "";
+            loadBooks();
+            alert(`Descrição de "${title}" atualizada!`);
+        }
+    }
 }
 
 window.onload = loadBooks;
