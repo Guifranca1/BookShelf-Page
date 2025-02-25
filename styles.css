@@ -3,7 +3,8 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
 }
 
 header {
@@ -12,32 +13,53 @@ header {
 }
 
 .category {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .category h2 {
-    color: #333;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+    color: #ffffff;
+    background-color: #2a2a2a;
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid #444;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.category h2:hover {
+    background-color: #3a3a3a;
+}
+
+.book-list {
+    max-height: 0; /* Escondido por padrão */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out; /* Animação suave */
 }
 
 .book-item {
     cursor: pointer;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     margin: 5px 0;
-    background-color: white;
+    background-color: #2a2a2a;
     border-radius: 5px;
 }
 
 .book-item:hover {
-    background-color: #e0e0e0;
+    background-color: #3a3a3a;
 }
 
-#book-details {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    background-color: #fff;
+.book-details {
+    display: none;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #333;
+    border: 1px solid #555;
     border-radius: 5px;
+    color: #e0e0e0;
+}
+
+.book-details img {
+    max-width: 150px;
 }
