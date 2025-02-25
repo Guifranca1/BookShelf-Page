@@ -76,17 +76,20 @@ function loadBooks() {
                 e.stopPropagation();
                 const isVisible = detailsDiv.style.display === "block";
                 detailsDiv.style.display = isVisible ? "none" : "block";
+                updateDropdownHeight(categoryDiv); // Recalcular altura do dropdown
             };
 
             bookList.appendChild(div);
         });
 
+        // Toggle da categoria
         categoryHeader.onclick = () => {
-            const isOpen = bookList.style.maxHeight;
+            const isOpen = bookList.classList.contains("open");
             if (isOpen) {
-                bookList.style.maxHeight = null;
+                bookList.classList.remove("open");
             } else {
-                bookList.style.maxHeight = bookList.scrollHeight + "px";
+                bookList.classList.add("open");
+                updateDropdownHeight(categoryDiv); // Recalcular altura ao abrir
             }
         };
 
@@ -94,6 +97,20 @@ function loadBooks() {
         categoryDiv.appendChild(bookList);
         categoriesDiv.appendChild(categoryDiv);
     });
+}
+
+// Função pra recalcular o max-height do dropdown
+function updateDropdownHeight(categoryDiv) {
+    const bookList = categoryDiv.querySelector(".book-list");
+    if (bookList.classList.contains("open")) {
+        // Forçar o cálculo da altura total, incluindo detalhes abertos
+        bookList.style.maxHeight = `${bookList.scrollHeight}px`;
+        setTimeout(() => {
+            bookList.style.maxHeight = `${bookList.scrollHeight}px`;
+        }, 0);
+    } else {
+        bookList.style.maxHeight = null;
+    }
 }
 
 window.onload = loadBooks;
