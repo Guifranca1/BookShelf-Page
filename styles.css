@@ -11,6 +11,16 @@ header {
     margin-bottom: 20px;
 }
 
+.category {
+    margin-bottom: 20px;
+}
+
+.category h2 {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
 .book-item {
     cursor: pointer;
     padding: 10px;
