@@ -78,8 +78,11 @@ function loadBooks() {
         booksInCategory.forEach(book => {
             const div = document.createElement("div");
             div.className = "book-item";
-            const statusIcon = statusIcon(book["Exclusive Shelf"]);
-            div.textContent = `${statusIcon} ${book.Title} - ${book.Author}`;
+            
+            // Call the function and store the result BEFORE the div.textContent line.
+            const statusIconResult = statusIcon(book["Exclusive Shelf"]); 
+            
+            div.textContent = `${statusIconResult} ${book.Title} - ${book.Author}`;
 
             const detailsDiv = document.createElement("div");
             detailsDiv.className = "book-details";
